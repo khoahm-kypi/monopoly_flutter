@@ -23,26 +23,67 @@ class PlayerPanelWidget extends StatelessWidget {
       onTap: () => _showPropertyDetail(context),
       child: Opacity(
         opacity: player.isActive ? 1.0 : 0.4,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: isCurrentTurn
-                ? Border.all(color: Colors.amber, width: 3)
-                : Border.all(color: Colors.grey.shade300, width: 1),
+            color: isCurrentTurn 
+                ? Colors.white.withOpacity(0.15) 
+                : Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isCurrentTurn
+                  ? player.tokenColor.withOpacity(0.8)
+                  : Colors.white.withOpacity(0.1),
+              width: isCurrentTurn ? 2 : 1,
+            ),
             boxShadow: isCurrentTurn
-                ? [const BoxShadow(color: Colors.amber, blurRadius: 10)]
+                ? [
+                    BoxShadow(
+                      color: player.tokenColor.withOpacity(0.3),
+                      blurRadius: 12,
+                      spreadRadius: 2,
+                    )
+                  ]
                 : [],
           ),
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundColor: player.tokenColor,
-                child: player.inJail
-                    ? const Icon(Icons.lock, color: Colors.white)
-                    : null,
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          player.tokenColor.withOpacity(0.8),
+                          player.tokenColor.withOpacity(0.4),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: player.tokenColor.withOpacity(0.4),
+                          blurRadius: 8,
+                        )
+                      ],
+                    ),
+                  ),
+                  if (player.inJail)
+                    const Icon(Icons.lock, color: Colors.white, size: 20)
+                  else
+                    Text(
+                      player.name.substring(0, 1).toUpperCase(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -50,44 +91,45 @@ class PlayerPanelWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        player.name,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                    Text(
+                      player.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, 
+                        fontSize: 14,
+                        color: Colors.white.withOpacity(0.9),
+                        letterSpacing: 0.5,
                       ),
                     ),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '\$${player.money}',
-                        style: const TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16),
+                    const SizedBox(height: 2),
+                    Text(
+                      '\$${player.money}',
+                      style: const TextStyle(
+                        color: Colors.greenAccent,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        shadows: [
+                          Shadow(color: Colors.green, blurRadius: 4),
+                        ],
                       ),
                     ),
                     if (ownedProperties.isNotEmpty) ...[
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Wrap(
                         spacing: 4,
                         runSpacing: 4,
                         children: ownedProperties
                             .map((p) => Container(
-                                  width: 16,
-                                  height: 16,
+                                  width: 14,
+                                  height: 8,
                                   decoration: BoxDecoration(
                                     color: Color(p.colorValue),
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: Border.all(
-                                        color: Colors.black26, width: 1),
-                                  ),
-                                  child: Tooltip(
-                                    message: '${p.name} (${AppStrings.get(language, 'rent_price', params: {'price': p.rent.toString()})})',
-                                    child: const SizedBox.expand(),
+                                    borderRadius: BorderRadius.circular(2),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(p.colorValue).withOpacity(0.5),
+                                        blurRadius: 2,
+                                      )
+                                    ],
                                   ),
                                 ))
                             .toList(),
@@ -96,6 +138,8 @@ class PlayerPanelWidget extends StatelessWidget {
                   ],
                 ),
               ),
+              if (isCurrentTurn)
+                const Icon(Icons.play_arrow, color: Colors.amber, size: 20),
             ],
           ),
         ),
