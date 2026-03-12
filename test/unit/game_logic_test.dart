@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:monopoly_ant/models/player_model.dart';
-import 'package:monopoly_ant/models/tile_model.dart';
-import 'package:monopoly_ant/models/board_state.dart';
-import 'package:monopoly_ant/providers/game_provider.dart';
+import 'package:monopoly_ant/features/game/domain/player_model.dart';
+import 'package:monopoly_ant/features/game/domain/tile_model.dart';
+import 'package:monopoly_ant/features/game/domain/board_state.dart';
+import 'package:monopoly_ant/features/game/application/game_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import '../mocks/hive_mocks.mocks.dart';
@@ -24,17 +24,10 @@ void main() {
         overrides: [
           // We can't easily override the box inside the build method of GameNotifier 
           // if it uses Hive.box() directly unless we stub the Hive call.
-          // Since GameNotifier uses Hive.box<BoardState>('game_save'), 
-          // let's adjust the test to be more logical.
         ],
       );
     });
 
-    // Note: To truly unit test GameNotifier with Hive, we'd ideally inject the box.
-    // However, since it's using Hive.box(...) directly, we might need a workaround.
-    // For this demonstration, I'll update the test to show how it SHOULD be structured 
-    // if the provider allowed injection, but since it doesn't, I'll keep it simple.
-    
     test('Basic Logic: Player Creation', () {
       final player = Player(
         id: '1', 

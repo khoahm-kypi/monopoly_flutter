@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:monopoly_ant/screens/setup_screen.dart';
+import 'package:monopoly_ant/features/setup/presentation/screens/setup_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:monopoly_ant/models/player_model.dart';
-import 'package:monopoly_ant/models/tile_model.dart';
-import 'package:monopoly_ant/models/board_state.dart';
+import 'package:monopoly_ant/features/game/domain/player_model.dart';
+import 'package:monopoly_ant/features/game/domain/tile_model.dart';
+import 'package:monopoly_ant/features/game/domain/board_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

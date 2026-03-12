@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:monopoly_ant/models/tile_model.dart';
-import 'package:monopoly_ant/models/chance_card_model.dart';
-import 'package:monopoly_ant/providers/language_provider.dart';
+import 'package:monopoly_ant/features/game/domain/tile_model.dart';
+import 'package:monopoly_ant/features/game/domain/chance_card_model.dart';
+import 'package:monopoly_ant/features/localization/application/language_provider.dart';
 
 class TileActionHandlers {
   static Future<void> showBuyPropertyDialog(

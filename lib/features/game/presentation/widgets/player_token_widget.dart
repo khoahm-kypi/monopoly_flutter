@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:monopoly_ant/models/player_model.dart';
+import 'package:monopoly_ant/features/game/domain/player_model.dart';
 
 class PlayerTokenWidget extends StatelessWidget {
   final Player player;

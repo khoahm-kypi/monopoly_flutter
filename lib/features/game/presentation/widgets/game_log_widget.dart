@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:monopoly_ant/providers/language_provider.dart';
+import 'package:monopoly_ant/features/localization/application/language_provider.dart';
 
 class GameLogWidget extends StatelessWidget {
   final List<String> logs;

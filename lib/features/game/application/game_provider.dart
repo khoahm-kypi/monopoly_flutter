@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:monopoly_ant/models/board_state.dart';
-import 'package:monopoly_ant/providers/language_provider.dart';
-import 'package:monopoly_ant/models/chance_card_model.dart';
-import 'package:monopoly_ant/models/player_model.dart';
-import 'package:monopoly_ant/models/tile_model.dart';
+import 'package:monopoly_ant/features/game/domain/board_state.dart';
+import 'package:monopoly_ant/features/localization/application/language_provider.dart';
+import 'package:monopoly_ant/features/game/domain/chance_card_model.dart';
+import 'package:monopoly_ant/features/game/domain/player_model.dart';
+import 'package:monopoly_ant/features/game/domain/tile_model.dart';
 import 'package:monopoly_ant/core/utils/board_generator.dart';
 import 'package:hive/hive.dart';
 import 'dart:math';

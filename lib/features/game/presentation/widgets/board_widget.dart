@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:monopoly_ant/models/player_model.dart';
-import 'package:monopoly_ant/models/tile_model.dart';
-import 'package:monopoly_ant/widgets/player_token_widget.dart';
-import 'package:monopoly_ant/widgets/tile_widget.dart';
+import 'package:monopoly_ant/features/game/domain/player_model.dart';
+import 'package:monopoly_ant/features/game/domain/tile_model.dart';
+import 'package:monopoly_ant/features/game/presentation/widgets/player_token_widget.dart';
+import 'package:monopoly_ant/features/game/presentation/widgets/tile_widget.dart';
 
 class BoardWidget extends StatelessWidget {
   final List<Tile> tiles;

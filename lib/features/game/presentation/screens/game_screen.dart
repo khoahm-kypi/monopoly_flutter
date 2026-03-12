@@ -1,13 +1,13 @@
-import 'package:monopoly_ant/utils/tile_action_handlers.dart';
-import 'package:monopoly_ant/models/tile_model.dart';
+import 'package:monopoly_ant/features/game/presentation/dialogs/tile_action_handlers.dart';
+import 'package:monopoly_ant/features/game/domain/tile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:monopoly_ant/providers/game_provider.dart';
-import 'package:monopoly_ant/widgets/board_widget.dart';
-import 'package:monopoly_ant/widgets/player_panel_widget.dart';
-import 'package:monopoly_ant/widgets/game_log_widget.dart';
-import 'package:monopoly_ant/screens/setup_screen.dart';
-import 'package:monopoly_ant/providers/language_provider.dart';
+import 'package:monopoly_ant/features/game/application/game_provider.dart';
+import 'package:monopoly_ant/features/game/presentation/widgets/board_widget.dart';
+import 'package:monopoly_ant/features/game/presentation/widgets/player_panel_widget.dart';
+import 'package:monopoly_ant/features/game/presentation/widgets/game_log_widget.dart';
+import 'package:monopoly_ant/features/setup/presentation/screens/setup_screen.dart';
+import 'package:monopoly_ant/features/localization/application/language_provider.dart';
 
 class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({Key? key}) : super(key: key);
