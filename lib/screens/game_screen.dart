@@ -254,8 +254,17 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       if ((prev == null || prev.currentPlayerIndex != next.currentPlayerIndex) &&
           next.currentPlayer.isBot && 
           next.currentPlayer.isActive) {
+        // Prevent multiple simultaneous bot triggers
+        if (_isRolling) return;
+        
         Future.delayed(const Duration(milliseconds: 1500), () {
-          if (mounted && !_isRolling) _onDiceRolled();
+          if (mounted && !_isRolling) {
+             // Second check inside delay to be safe
+             final currentState = ref.read(gameProvider);
+             if (currentState.currentPlayer.isBot && currentState.currentPlayer.isActive) {
+                _onDiceRolled();
+             }
+          }
         });
       }
     });
