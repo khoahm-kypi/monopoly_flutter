@@ -35,7 +35,19 @@ class BoardWidget extends StatelessWidget {
         final double boardSize = constraints.biggest.shortestSide;
         final double tileSize = boardSize / 8;
 
-        return SizedBox(
+        return Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFF0A0E21),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 20,
+                spreadRadius: 5,
+              ),
+            ],
+          ),
           width: boardSize,
           height: boardSize,
           child: Stack(

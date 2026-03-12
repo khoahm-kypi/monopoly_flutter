@@ -26,45 +26,87 @@ class TileWidget extends ConsumerWidget {
     }
 
     return Container(
+      margin: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: ownerColor != null 
-          ? Border.all(color: ownerColor!, width: 3) 
-          : Border.all(color: Colors.black54, width: 0.5),
-        boxShadow: ownerColor != null 
-          ? [BoxShadow(color: ownerColor!.withOpacity(0.3), blurRadius: 4, spreadRadius: 1)] 
-          : null,
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: ownerColor?.withOpacity(0.8) ?? Colors.white.withOpacity(0.2),
+          width: ownerColor != null ? 2 : 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: (ownerColor ?? Colors.cyan).withOpacity(0.1),
+            blurRadius: 4,
+            spreadRadius: 1,
+          ),
+          if (ownerColor != null)
+            BoxShadow(
+              color: ownerColor!.withOpacity(0.3),
+              blurRadius: 8,
+              spreadRadius: 2,
+            ),
+        ],
       ),
-      child: Column(
-        children: [
-          _buildHeader(),
-          Expanded(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    displayName,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Column(
+          children: [
+            _buildHeader(),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.white.withOpacity(0.05),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 4.0),
+                    child: Text(
+                      displayName.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white.withOpacity(0.9),
+                        letterSpacing: 0.5,
+                        shadows: [
+                          Shadow(
+                            color: Colors.cyan.withOpacity(0.5),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          if (tile is PropertyTile)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 1.0),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
+            if (tile is PropertyTile)
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.3),
+                ),
                 child: Text(
                   '\$${(tile as PropertyTile).price}',
-                  style: const TextStyle(fontSize: 8),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 8,
+                    color: Colors.amberAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -72,27 +114,46 @@ class TileWidget extends ConsumerWidget {
   Widget _buildHeader() {
     if (tile is PropertyTile) {
       final prop = tile as PropertyTile;
+      final color = Color(prop.colorValue);
       return Container(
-        height: 10,
+        height: 6,
         width: double.infinity,
-        color: prop.colorGroup,
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.8),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.5),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (prop.houseCount > 0)
-              ...List.generate(
-                prop.houseCount,
-                (index) => const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 1.0),
-                  child: Icon(Icons.home, color: Colors.white, size: 8),
-                ),
-              )
-            else if (ownerColor != null)
-              const Icon(Icons.check_circle, color: Colors.white, size: 8),
-          ],
+          children: List.generate(
+            prop.houseCount,
+            (index) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 0.5),
+              width: 4,
+              height: 4,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
         ),
       );
     }
-    return const SizedBox(height: 8);
+    return Container(
+      height: 4,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.cyan.withOpacity(0.5), Colors.transparent],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+    );
   }
 }
