@@ -19,6 +19,19 @@ class GameScreen extends ConsumerStatefulWidget {
 class _GameScreenState extends ConsumerState<GameScreen> {
   int? _lastDiceRoll;
   bool _isRolling = false;
+  
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final state = ref.read(gameProvider);
+        if (state.currentPlayer.isBot && state.currentPlayer.isActive) {
+          _onDiceRolled();
+        }
+      }
+    });
+  }
 
   void _onDiceRolled() async {
     if (_isRolling) return;
@@ -73,8 +86,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           if (player.money >= property.price) {
             notifier.buyProperty(property);
           }
-          notifier.endTurn();
           if (mounted) setState(() { _isRolling = false; });
+          notifier.endTurn();
           return;
         }
 
@@ -86,12 +99,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             state.language,
             () { // onBuy
               notifier.buyProperty(property);
-              notifier.endTurn();
               if (mounted) setState(() { _isRolling = false; });
+              notifier.endTurn();
             },
             () { // onSkip
-              notifier.endTurn();
               if (mounted) setState(() { _isRolling = false; });
+              notifier.endTurn();
             },
           );
           return; // endTurn is called inside the callbacks
@@ -106,8 +119,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           if (player.money >= property.upgradeCost * 2 && property.houseCount < 4) {
             notifier.upgradeProperty(property);
           }
-          notifier.endTurn();
           if (mounted) setState(() { _isRolling = false; });
+          notifier.endTurn();
           return;
         }
 
@@ -119,12 +132,12 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             state.language,
             () { // onUpgrade
               notifier.upgradeProperty(property);
-              notifier.endTurn();
               if (mounted) setState(() { _isRolling = false; });
+              notifier.endTurn();
             },
             () { // onSkip
-              notifier.endTurn();
               if (mounted) setState(() { _isRolling = false; });
+              notifier.endTurn();
             },
           );
           return;
@@ -139,15 +152,15 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       final card = notifier.drawChanceCard();
       if (player.isBot) {
         await notifier.applyChanceCard(card);
-        notifier.endTurn();
         if (mounted) setState(() { _isRolling = false; });
+        notifier.endTurn();
         return;
       }
       
       TileActionHandlers.showChanceCardDialog(context, card, state.language, () async {
         await notifier.applyChanceCard(card);
-        notifier.endTurn();
         if (mounted) setState(() { _isRolling = false; });
+        notifier.endTurn();
       });
       return;
     } else if (currentTile.type == TileType.goToJail) {
@@ -160,10 +173,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       // Go
     }
 
-    notifier.endTurn();
     if (mounted) {
       setState(() { _isRolling = false; });
     }
+    notifier.endTurn();
   }
 
   void _showFullLogs() {
