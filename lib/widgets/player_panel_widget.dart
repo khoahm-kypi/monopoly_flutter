@@ -150,39 +150,134 @@ class PlayerPanelWidget extends StatelessWidget {
   void _showPropertyDetail(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppStrings.get(language, 'turn_of', params: {'name': player.name})),
-        content: SizedBox(
-          width: 400,
-          child: ownedProperties.isEmpty
-              ? Center(child: Text(AppStrings.get(language, 'no_actions')))
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: ownedProperties.length,
-                  itemBuilder: (context, index) {
-                    final p = ownedProperties[index];
-                    return ListTile(
-                      leading: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: Color(p.colorValue),
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(color: Colors.black26),
-                        ),
-                      ),
-                      title: Text(p.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                      subtitle: Text('${AppStrings.get(language, 'buy_price', params: {'price': p.price.toString()})} | ${AppStrings.get(language, 'rent_price', params: {'price': p.rent.toString()})}'),
-                    );
-                  },
-                ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppStrings.get(language, 'close')),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          width: 450,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1F2937).withOpacity(0.9),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: Colors.white10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 30,
+                spreadRadius: 5,
+              ),
+            ],
           ),
-        ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: player.tokenColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: player.tokenColor.withOpacity(0.5), blurRadius: 10),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        player.name.substring(0, 1).toUpperCase(),
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppStrings.get(language, 'assets_of', params: {'name': player.name}).toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                        Text(
+                          '\$${player.money}',
+                          style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close, color: Colors.white54),
+                  ),
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Divider(color: Colors.white10),
+              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 400),
+                child: ownedProperties.isEmpty
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(40.0),
+                          child: Text(
+                            AppStrings.get(language, 'no_actions'),
+                            style: const TextStyle(color: Colors.white38),
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: ownedProperties.length,
+                        itemBuilder: (context, index) {
+                          final p = ownedProperties[index];
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              leading: Container(
+                                width: 12,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: Color(p.colorValue),
+                                  borderRadius: BorderRadius.circular(4),
+                                  boxShadow: [
+                                    BoxShadow(color: Color(p.colorValue).withOpacity(0.4), blurRadius: 4),
+                                  ],
+                                ),
+                              ),
+                              title: Text(
+                                p.name,
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                '${AppStrings.get(language, 'buy_price', params: {'price': p.price.toString()})} | ${AppStrings.get(language, 'rent_price', params: {'price': p.rent.toString()})}',
+                                style: const TextStyle(color: Colors.white54, fontSize: 11),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: List.generate(
+                                  p.houseCount,
+                                  (i) => const Icon(Icons.home, color: Colors.amberAccent, size: 14),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
